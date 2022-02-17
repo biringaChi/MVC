@@ -13,16 +13,30 @@ class TableModel(QtCore.QAbstractTableModel):
         super().__init__()
         self._data = data
 
+    def headerData(self, section: int, orientation: Qt.Orientation, role: int):
+        if role == Qt.ItemDataRole.DisplayRole:
+            if orientation == Qt.Orientation.Horizontal:
+                return ["Account Number", "Available Balance"][section]
+
     def data(self, index, role):
         if role == Qt.ItemDataRole.DisplayRole:
             value = self._data[index.row()][index.column()]
-            return value
+            return str(value)
 
     def rowCount(self, index):
         return self._data.shape[0]
 
     def columnCount(self, index):
         return self._data.shape[1]
+
+    def get_single_value(self, row: int, column: int):
+        return self._data[row][column]
+
+    def flags(self, index):
+        return Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsSelectable
+
+    # def update(self):
+    #     self._data = controller.update()
 
 
 class BankUI(QWidget):
@@ -31,12 +45,11 @@ class BankUI(QWidget):
         super().__init__()
         self._table_model = table_model
 
-
         '''
         Main Window
         '''
         self.setWindowTitle("First National Bank of SCAG")
-        self.setStyleSheet("background-color: lightgray")
+        self.setStyleSheet("background-color: darkgray")
         self.setFixedSize(QSize(500, 500))
 
         '''
@@ -56,10 +69,15 @@ class BankUI(QWidget):
         box_dimension = 400
         self.account_table_view = QTableView(self)
         self.account_table_view.setGeometry(QRect(50, 20, box_dimension, box_dimension))
+        self.account_table_view.verticalHeader().setVisible(False)
+        header_stylesheet = "::section{Background-color: gainsboro; border: 1px solid black;}"
+        self.account_table_view.horizontalHeader().setStyleSheet(header_stylesheet)
+        self.account_table_view.setStyleSheet("QTableView::item {border-left: 1px solid gainsboro; "
+                                              "border-bottom: 1px solid gainsboro; background-color: white}")
         self.account_table_view.setModel(self._table_model)
-        for col in range(self._table_model.columnCount(0)):
-            self.account_table_view.setColumnWidth(col, int(box_dimension/self._table_model.columnCount(0))-9)
 
+        for col in range(self._table_model.columnCount(0)):
+            self.account_table_view.setColumnWidth(col, int(box_dimension / self._table_model.columnCount(0))-1)
 
         '''
         Controller Label
@@ -81,11 +99,8 @@ class BankUI(QWidget):
         self.account_dropdown.setModelColumn(0)
         self.account_dropdown.setStyleSheet("background-color: white")
         self.account_dropdown.addItem("Accounts", -1)
-
-        # self.account_dropdown.addItems(
-        #     # TODO:
-        #     # INSERT RETURNED ACCOUNTS HERE
-        # )
+        for row in range(self._table_model.rowCount(0)):
+            self.account_dropdown.addItem(self._table_model.get_single_value(row, 0))
 
         '''
         Transaction Type Dropdown
@@ -105,7 +120,7 @@ class BankUI(QWidget):
         self.amount_field = QLineEdit(self)
         self.amount_field.setGeometry(QRect(280, 460, 120, 20))
         self.amount_field.setInputMethodHints(Qt.InputMethodHint.ImhFormattedNumbersOnly)
-        self.amount_field.setStyleSheet("background-color: white") # ; border: 1px solid black")
+        self.amount_field.setStyleSheet("background-color: white")  # ; border: 1px solid black")
         self.amount_field.setPlaceholderText("Amount")
 
         '''
@@ -119,14 +134,21 @@ class BankUI(QWidget):
         ok_button_font.setBold(True)
         self.ok_button.setFont(ok_button_font)
         self.ok_button.setText("OK")
+        self.ok_button.clicked.connect(self.ok_clicked)
 
+    def ok_clicked(self):
+        acct = self.account_dropdown.currentText()
+        trans_type = self.transaction_dropdown.currentText()
+        amt = float(self.amount_field.text())
+        # model.update_account(acct, -amt if trans_type == "Withdraw" else amt)
+        
 
 app = QApplication([])
 
-data = np.array([("1", 245.87),
-                 ("2", 4742.12),
-                 ("3", 83226.42),
-                 ("4", 10784.22)])
+data = np.array([("10", 245.87),
+                 ("22", 4742.12),
+                 ("34", 83226.42),
+                 ("49", 10784.22)])
 
 table_model = TableModel(data)
 window = BankUI(table_model)
