@@ -1,6 +1,7 @@
 __author__ = 'biringaChi'
 
 from sqlite3 import connect
+import pandas as pd
 from contextlib import contextmanager
 from typing import List, Tuple
 
@@ -28,22 +29,23 @@ class AccountDB:
 			yield
 		finally:
 			pass
+
+	def read_data(self) -> Tuple[List]:
+		try:
+			data = pd.read_csv("data.csv")
+		except FileNotFoundError as e:
+			raise(e)
+		accounts = [account for account in data["Account"]]
+		amounts = [amount for amount in data["Amount"]]
+		return accounts, amounts 
 	
 	def populate(self) -> str:
 		with connect(self.account_db) as conn:
-			account1 = (83707327, 100000.00)
-			account2 = (97345207, 200000.00)
-			account3 = (90413650, 300000.00)
-			account4 = (10788931, 400000.00)
-			account5 = (93192708, 500000.00)
-
 			curr = conn.cursor()
 			with self.account_table(curr):
-				curr.execute("INSERT into accounts(Account, Amount) VALUES(?, ?)", account1)
-				curr.execute("INSERT into accounts(Account, Amount) values(?, ?)", account2)
-				curr.execute("INSERT into accounts(Account, Amount) values(?, ?)", account3)
-				curr.execute("INSERT into accounts(Account, Amount) values(?, ?)", account4)
-				curr.execute("INSERT into accounts(Account, Amount) values(?, ?)", account5)
+				accounts, amounts = self.read_data()
+				for account, amount in zip(accounts, amounts):
+					curr.execute("INSERT into accounts(Account, Amount) VALUES(?, ?)", (account, amount))
 				for row in curr.execute('select * from accounts'): print(row)
 				print("Accounts table created")
 	
@@ -53,20 +55,6 @@ class AccountDB:
 		elif transaction.lower().startswith("with"):
 			print(f"{amount} was successfully withdrawn from {account} account")
 		else: print("Unsuccessfully transaction") 
-		
-	def update(self, transaction: str, amount: float, account: int) -> str:
-		"""
-		Arguments.  
-			- Amount: type(float)
-			- Account: type(int)
-			- transaction: type(string)
-		"""
-		with connect(self.account_db) as conn:
-			curr = conn.cursor()
-			with self.account_table(curr):
-				curr.execute('UPDATE accounts SET amount = ? WHERE Account = ?', (amount, account))
-				conn.commit()
-				return self.response_message(transaction, amount, account)
 
 	def get_current_balance(self, account) -> float:
 		with connect(self.account_db) as conn:
@@ -85,13 +73,42 @@ class AccountDB:
 				for cols in curr.execute('select * from accounts'):
 					print(cols)
 	
+	def deposit(self, account, amount):
+		current_balance = self.get_current_balance(account)
+		current_balance += amount
+		return current_balance
+		
+	def withdraw(self, account, amount):
+		min_dollars = 5
+		current_balance = self.get_current_balance(account)
+		if current_balance <= min_dollars:
+			raise ValueError("Insufficient funds")
+		else: current_balance -= amount
+		return current_balance
+
+	def update_data(self, transaction: str, account: int, amount: float) -> str:
+		"""
+		Arguments.  
+			- Amount: type(float)
+			- Account: type(int)
+			- transaction: type(string)
+		"""
+		with connect(self.account_db) as conn:
+			curr = conn.cursor()
+			with self.account_table(curr):
+				if transaction.lower().startswith("dep"):
+					new_balance = self.deposit(account, amount)
+					curr.execute('UPDATE accounts SET amount = ? WHERE Account = ?', (new_balance, account))
+				elif transaction.lower().startswith("with"):
+					new_balance = self.withdraw(account, amount)
+					curr.execute('UPDATE accounts SET amount = ? WHERE Account = ?', (new_balance, account))
+				else: ValueError("Please try again")
+			conn.commit()
+			return self.response_message(transaction, amount, account)
+
 	def get_data(self) -> List[Tuple]:
 		data = []
 		with connect(self.account_db) as conn:
 			for cols in conn.cursor().execute('select Account, Amount from accounts'):
 				data.append(cols)
 		return data
-
-# if __name__ == "__main__":
-# 	adb = AccountDB() 
-# 	print(adb.get_data())
