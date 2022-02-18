@@ -10,6 +10,7 @@ class Controller(AccountDB):
 	
 	def __repr__(self) -> str: return self.__str__()
 
+
 	def deposit(self, transaction, account, amount):
 		current_balance = self.get_current_balance(account)
 		current_balance += amount

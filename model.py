@@ -2,6 +2,7 @@ __author__ = 'biringaChi'
 
 from sqlite3 import connect
 from contextlib import contextmanager
+from typing import List, Tuple
 
 """
 Accounts Table
@@ -21,14 +22,14 @@ class AccountDB:
 	def __repr__(self) -> str: return self.__str__()
 	
 	@contextmanager
-	def account_table(self, curr):
+	def account_table(self, curr) -> None:
 		curr.execute("create table if not exists accounts(id integer PRIMARY KEY, Account integer, Amount real)")
 		try:
 			yield
 		finally:
 			pass
 	
-	def populate(self):
+	def populate(self) -> str:
 		with connect(self.account_db) as conn:
 			account1 = (83707327, 100000.00)
 			account2 = (97345207, 200000.00)
@@ -46,17 +47,16 @@ class AccountDB:
 				for row in curr.execute('select * from accounts'): print(row)
 				print("Accounts table created")
 	
-	def response_message(self, transaction, amount, account):
+	def response_message(self, transaction: str, amount: float, account: int) -> str:
 		if transaction.lower().startswith("dep"):
 			print(f"${amount} was successfully deposited to {account} account")
 		elif transaction.lower().startswith("with"):
 			print(f"{amount} was successfully withdrawn from {account} account")
 		else: print("Unsuccessfully transaction") 
 		
-	def update(self, transaction, amount, account):
+	def update(self, transaction: str, amount: float, account: int) -> str:
 		"""
 		Arguments.  
-		withdraw infomrmation is not
 			- Amount: type(float)
 			- Account: type(int)
 			- transaction: type(string)
@@ -68,7 +68,7 @@ class AccountDB:
 				conn.commit()
 				return self.response_message(transaction, amount, account)
 
-	def get_current_balance(self, account):
+	def get_current_balance(self, account) -> float:
 		with connect(self.account_db) as conn:
 			cur = conn.cursor()
 			for account_details in cur.execute('select Account, Amount from accounts'):
@@ -78,9 +78,20 @@ class AccountDB:
 					return amount
 				else: raise ValueError("Account not found")
 		
-	def view(self):
+	def view(self) -> None:
 		with connect(self.account_db) as conn:
 			curr = conn.cursor()
 			with self.account_table(curr):
 				for cols in curr.execute('select * from accounts'):
 					print(cols)
+	
+	def get_data(self) -> List[Tuple]:
+		data = []
+		with connect(self.account_db) as conn:
+			for cols in conn.cursor().execute('select Account, Amount from accounts'):
+				data.append(cols)
+		return data
+
+# if __name__ == "__main__":
+# 	adb = AccountDB() 
+# 	print(adb.get_data())
