@@ -1,7 +1,6 @@
 __author__ = 'biringaChi'
 
 from model import AccountDB
-from sqlite3 import connect
 
 class Controller(AccountDB):
 	def __init__(self) -> None:
@@ -11,39 +10,15 @@ class Controller(AccountDB):
 	
 	def __repr__(self) -> str: return self.__str__()
 
-	def get_current_balance(self, account):
-		with connect(self.account_db) as conn:
-			cur = conn.cursor()
-			for account_details in cur.execute('select Account, Amount from accounts'):
-				account_number = account_details[0]
-				amount = account_details[1]
-				if account_number == account:
-					return amount
-				else: raise ValueError("Account not found")
-
-	def persist_data(self, account, amount):
-		pass
-
-	def deposit(self, account, amount):
+	def deposit(self, transaction, account, amount):
 		current_balance = self.get_current_balance(account)
 		current_balance += amount
-		persisted = self.persist_data(current_balance, account) # persist deposited amount to DB
-		if persisted == True:
-			print(f"{amount} wwas succesfully deposited!")
-		else: raise ValueError("Unsucsessful deposit")
+		self.update(transaction, account, amount)
 
-	def withdrawal(self, account, amount):
+	def withdrawal(self, transaction, account, amount):
 		min_dollars = 5
 		current_balance = self.get_current_balance(account)
 		if current_balance <= min_dollars:
 			raise ValueError("Insufficient funds")
 		else: current_balance -= amount
-		persisted = self.persist_data(current_balance, amount)
-		if persisted == True:
-			print(f"{amount} wwas succesfully withdrawn!")
-		else: raise ValueError("Unsucsessful withdrawal")
-		
-
-# if __name__ == "__main__":
-# 	controller = Controller() 
-# 	print(controller.get_current_balance(83707327))
+		self.update(transaction, account, amount)
