@@ -7,7 +7,6 @@
     <list default="true" id="de08f2ba-f3b5-4b05-950a-2900c2101ce1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BankingAppUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/BankingAppUI.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/account_db.db" beforeDir="false" afterPath="$PROJECT_DIR$/db/account_db.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/model.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -109,6 +108,7 @@
       <workItem from="1645136021464" duration="2331000" />
       <workItem from="1645218534674" duration="13353000" />
       <workItem from="1645275429620" duration="2572000" />
+      <workItem from="1645279569946" duration="4131000" />
     </task>
     <servers />
   </component>
@@ -120,8 +120,18 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/model.py</url>
-          <line>82</line>
+          <line>89</line>
           <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/model.py</url>
+          <line>84</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/model.py</url>
+          <line>103</line>
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -131,6 +141,6 @@
     <SUITE FILE_PATH="coverage/MVC_Banking_App$BankingAppUI.coverage" NAME="BankingAppUI Coverage Results" MODIFIED="1645238118573" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.." />
     <SUITE FILE_PATH="coverage/MVC$BankingAppUI.coverage" NAME="BankingAppUI Coverage Results" MODIFIED="1645275491487" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/MVC_Banking_App$BankingAppUI__1_.coverage" NAME="BankingAppUI (1) Coverage Results" MODIFIED="1645274790891" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/MVC$BankingAppUI__1_.coverage" NAME="BankingAppUI (1) Coverage Results" MODIFIED="1645277938427" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/MVC$BankingAppUI__1_.coverage" NAME="BankingAppUI (1) Coverage Results" MODIFIED="1645304252601" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
