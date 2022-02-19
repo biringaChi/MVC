@@ -76,15 +76,14 @@ class AccountDB:
 	def deposit(self, account, amount):
 		current_balance = self.get_current_balance(account)
 		current_balance += amount
-		return current_balance
+		return float(str("%.2f" % current_balance))
 		
 	def withdraw(self, account, amount):
-		min_dollars = 5
 		current_balance = self.get_current_balance(account)
-		if current_balance <= min_dollars:
+		if current_balance < amount:
 			raise ValueError("Insufficient funds")
 		else: current_balance -= amount
-		return current_balance
+		return float(str("%.2f" % current_balance))
 
 	def update_data(self, transaction: str, account: int, amount: float) -> str:
 		"""
