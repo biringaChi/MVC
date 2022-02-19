@@ -14,9 +14,10 @@ int | int     | int
 ++++++++++++++++++++++
 """
 
+
 class AccountDB:
 	def __init__(self) -> None:
-		self.account_db =  "./db/account_db.db"
+		self.account_db = "./db/account_db.db"
 	
 	def __str__(self) -> str: return self.__class__.__name__
 	
