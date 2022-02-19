@@ -54,8 +54,8 @@ class AccountDB:
 		if transaction.lower().startswith("dep"):
 			print(f"${amount} was successfully deposited to {account} account")
 		elif transaction.lower().startswith("with"):
-			print(f"{amount} was successfully withdrawn from {account} account")
-		else: print("Unsuccessfully transaction") 
+			print(f"${amount} was successfully withdrawn from {account} account")
+		else: print("Transaction unsuccessful...\nPlease check transaction fields...")
 
 	def get_current_balance(self, account) -> float:
 		with connect(self.account_db) as conn:
@@ -101,8 +101,12 @@ class AccountDB:
 					new_balance = self.deposit(account, amount)
 					curr.execute('UPDATE accounts SET amount = ? WHERE Account = ?', (new_balance, account))
 				elif transaction.lower().startswith("with"):
-					new_balance = self.withdraw(account, amount)
-					curr.execute('UPDATE accounts SET amount = ? WHERE Account = ?', (new_balance, account))
+					try:
+						new_balance = self.withdraw(account, amount)
+						curr.execute('UPDATE accounts SET amount = ? WHERE Account = ?', (new_balance, account))
+					except:
+						print("Withdrawal failed: Insufficient funds...")
+						return
 				else: ValueError("Please try again")
 			conn.commit()
 			return self.response_message(transaction, amount, account)

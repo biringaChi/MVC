@@ -13,8 +13,6 @@ class TableModel(QtCore.QAbstractTableModel):
         self._model = AccountDB()
         self._data = np.array(self._model.get_data(), dtype=object)
 
-
-
     def headerData(self, section: int, orientation: Qt.Orientation, role: int):
         if role == Qt.ItemDataRole.DisplayRole:
             if orientation == Qt.Orientation.Horizontal:
@@ -37,7 +35,7 @@ class TableModel(QtCore.QAbstractTableModel):
     def flags(self, index):
         return Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEditable
 
-    def update_account(self,trans_type: str, amt: float, acct: str):
+    def update_account(self, trans_type: str, amt: float, acct: str):
         self._model.update_data(trans_type, int(acct), amt)
 
     def update(self):
@@ -81,9 +79,9 @@ class BankUI(QWidget):
                                               "border-bottom: 1px solid gainsboro; background-color: white}")
         self.account_table_view.setModel(self._table_model)
         for col in range(self._table_model.columnCount(0)):
-            self.account_table_view.setColumnWidth(col, int(box_dimension / self._table_model.columnCount(0))-1)
+            self.account_table_view.setColumnWidth(col, int(box_dimension / self._table_model.columnCount(0)) - 1)
         for row in range(self._table_model.rowCount(0)):
-            self.account_table_view.setRowHeight(row, int(box_dimension/self._table_model.rowCount(0))-2)
+            self.account_table_view.setRowHeight(row, int(box_dimension / self._table_model.rowCount(0)) - 2)
 
         '''
         Controller Label
@@ -128,6 +126,8 @@ class BankUI(QWidget):
         self.amount_field.setInputMethodHints(Qt.InputMethodHint.ImhFormattedNumbersOnly)
         self.amount_field.setStyleSheet("background-color: white")  # ; border: 1px solid black")
         self.amount_field.setPlaceholderText("Amount")
+        only_float = QDoubleValidator(0, float("inf"), 2)
+        self.amount_field.setValidator(only_float)
 
         '''
         OK Button
@@ -144,11 +144,17 @@ class BankUI(QWidget):
 
     def ok_clicked(self):
         acct = self.account_dropdown.currentText()
-        trans_type = self.transaction_dropdown.currentText()
-        amt = float(self.amount_field.text())
-        self._table_model.update_account(trans_type, amt, acct)
-        new_table_model = TableModel()
-        self.account_table_view.setModel(new_table_model)
+        amt = self.amount_field.text()
+        if acct != "Accounts" and amt != "":
+            amt = float(amt)
+            trans_type = self.transaction_dropdown.currentText()
+            self._table_model.update_account(trans_type, amt, acct)
+            new_table_model = TableModel()
+            self.account_table_view.setModel(new_table_model)
+        elif acct == "Accounts":
+            print("Please select an account...")
+        elif amt == "":
+            print("Please enter an amount to deposit/withdraw")
 
 
 app = QApplication([])
