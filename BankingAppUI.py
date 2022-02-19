@@ -1,17 +1,19 @@
-from typing import List
-
 import numpy as np
 from PyQt6 import QtCore
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
+from model import AccountDB
 
 
 class TableModel(QtCore.QAbstractTableModel):
 
-    def __init__(self, data):
+    def __init__(self):
         super().__init__()
-        self._data = data
+        self._model = AccountDB()
+        self._data = np.array(self._model.get_data(), dtype=object)
+
+
 
     def headerData(self, section: int, orientation: Qt.Orientation, role: int):
         if role == Qt.ItemDataRole.DisplayRole:
@@ -33,10 +35,13 @@ class TableModel(QtCore.QAbstractTableModel):
         return self._data[row][column]
 
     def flags(self, index):
-        return Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsSelectable
+        return Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEditable
 
-    # def update(self):
-    #     self._data = controller.update()
+    def update_account(self,trans_type: str, amt: float, acct: str):
+        self._model.update_data(trans_type, int(acct), amt)
+
+    def update(self):
+        self._data = np.array(self._model.get_data())
 
 
 class BankUI(QWidget):
@@ -75,9 +80,10 @@ class BankUI(QWidget):
         self.account_table_view.setStyleSheet("QTableView::item {border-left: 1px solid gainsboro; "
                                               "border-bottom: 1px solid gainsboro; background-color: white}")
         self.account_table_view.setModel(self._table_model)
-
         for col in range(self._table_model.columnCount(0)):
             self.account_table_view.setColumnWidth(col, int(box_dimension / self._table_model.columnCount(0))-1)
+        for row in range(self._table_model.rowCount(0)):
+            self.account_table_view.setRowHeight(row, int(box_dimension/self._table_model.rowCount(0))-2)
 
         '''
         Controller Label
@@ -100,7 +106,7 @@ class BankUI(QWidget):
         self.account_dropdown.setStyleSheet("background-color: white")
         self.account_dropdown.addItem("Accounts", -1)
         for row in range(self._table_model.rowCount(0)):
-            self.account_dropdown.addItem(self._table_model.get_single_value(row, 0))
+            self.account_dropdown.addItem(str(self._table_model.get_single_value(row, 0)))
 
         '''
         Transaction Type Dropdown
@@ -140,17 +146,14 @@ class BankUI(QWidget):
         acct = self.account_dropdown.currentText()
         trans_type = self.transaction_dropdown.currentText()
         amt = float(self.amount_field.text())
-        # model.update_account(acct, -amt if trans_type == "Withdraw" else amt)
-        
+        self._table_model.update_account(trans_type, amt, acct)
+        new_table_model = TableModel()
+        self.account_table_view.setModel(new_table_model)
+
 
 app = QApplication([])
 
-data = np.array([("10", 245.87),
-                 ("22", 4742.12),
-                 ("34", 83226.42),
-                 ("49", 10784.22)])
-
-table_model = TableModel(data)
+table_model = TableModel()
 window = BankUI(table_model)
 
 window.show()
