@@ -33,7 +33,7 @@ class TableModel(QtCore.QAbstractTableModel):
         return self._data[row][column]
 
     def flags(self, index):
-        return Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEditable
+        return Qt.ItemFlag.ItemIsEnabled
 
     def update_account(self, trans_type: str, amt: float, acct: str):
         self._model.update_data(trans_type, int(acct), amt)
@@ -157,11 +157,12 @@ class BankUI(QWidget):
             print("Please enter an amount to deposit/withdraw")
 
 
-app = QApplication([])
+if __name__ == '__main__':
+    app = QApplication([])
 
-table_model = TableModel()
-window = BankUI(table_model)
+    table_model = TableModel()
+    window = BankUI(table_model)
 
-window.show()
+    window.show()
 
-app.exec()
+    app.exec()

@@ -60,12 +60,11 @@ class AccountDB:
 	def get_current_balance(self, account) -> float:
 		with connect(self.account_db) as conn:
 			cur = conn.cursor()
-			for account_details in cur.execute('select Account, Amount from accounts'):
-				account_number = account_details[0]
-				amount = account_details[1]
-				if account_number == account:
-					return amount
-				else: raise ValueError("Account not found")
+			cur.execute('SELECT Amount FROM accounts WHERE Account = ?', (account,))
+			amount = cur.fetchone()[0]
+			if amount:
+				return amount
+			else: raise ValueError("Account not found")
 		
 	def view(self) -> None:
 		with connect(self.account_db) as conn:
@@ -103,6 +102,7 @@ class AccountDB:
 				elif transaction.lower().startswith("with"):
 					try:
 						new_balance = self.withdraw(account, amount)
+						print("new_balance: ", new_balance)
 						curr.execute('UPDATE accounts SET amount = ? WHERE Account = ?', (new_balance, account))
 					except:
 						print("Withdrawal failed: Insufficient funds...")
