@@ -62,9 +62,10 @@ class AccountDB:
 			cur = conn.cursor()
 			cur.execute('SELECT Amount FROM accounts WHERE Account = ?', (account,))
 			amount = cur.fetchone()[0]
-			if amount:
+			if amount is not None:
 				return amount
-			else: raise ValueError("Account not found")
+			else:
+				raise ValueError("Account not found")
 		
 	def view(self) -> None:
 		with connect(self.account_db) as conn:
