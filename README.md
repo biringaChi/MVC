@@ -20,9 +20,11 @@ These are the versions the software was built with
 The app can be run by pulling the code from this repository and running:
 
 Mac/Linux  `$ python BankAppUI.py`
+
 Windows    `$ python.exe -m BankAppUI.py`
 
 Depending on what packages you have installed through pip or conda, you may need to install dependencies before running the application. Most likely you will need to install PyQt6:
 
 Mac/Linux  `$ python pip install pyqt6 pyqt6-tools`
+
 Windows    `$ python.exe -m pip install pyqt6 pyqt6-tools`
