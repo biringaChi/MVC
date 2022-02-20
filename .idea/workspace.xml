@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="de08f2ba-f3b5-4b05-950a-2900c2101ce1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BankingAppUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/BankingAppUI.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/account_db.db" beforeDir="false" afterPath="$PROJECT_DIR$/db/account_db.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/model.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -108,18 +108,29 @@
       <workItem from="1645136021464" duration="2331000" />
       <workItem from="1645218534674" duration="13353000" />
       <workItem from="1645275429620" duration="2572000" />
-      <workItem from="1645279569946" duration="6421000" />
+      <workItem from="1645279569946" duration="7121000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/model.py</url>
+          <line>76</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/MVC_Banking_App$Test.coverage" NAME="BankingAppUI Coverage Results" MODIFIED="1645125752218" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/MVC_Banking_App$BankingAppUI.coverage" NAME="BankingAppUI Coverage Results" MODIFIED="1645238118573" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.." />
     <SUITE FILE_PATH="coverage/MVC$BankingAppUI.coverage" NAME="BankingAppUI Coverage Results" MODIFIED="1645275491487" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/MVC_Banking_App$BankingAppUI__1_.coverage" NAME="BankingAppUI (1) Coverage Results" MODIFIED="1645274790891" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/MVC$BankingAppUI__1_.coverage" NAME="BankingAppUI (1) Coverage Results" MODIFIED="1645309092187" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/MVC$BankingAppUI__1_.coverage" NAME="BankingAppUI (1) Coverage Results" MODIFIED="1645318231072" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
